@@ -86,9 +86,7 @@ namespace WebsiteCrawler
 
                 string websiteCodes = FetchWebsiteCodes(url);
 
-                string extension = url.Replace(siteUrl, string.Empty);
-
-                string downloadPath = CreateFolder(extension);
+                string downloadPath = CreateFolder(url);
 
                 SaveFileToDisk(websiteCodes, downloadPath, url);
                 
@@ -297,8 +295,10 @@ namespace WebsiteCrawler
         }
 
         // Used in order to create a local folder if does not exist
-        static string CreateFolder(string extension)
+        static string CreateFolder(string url)
         {
+            string extension = url.Replace(siteUrl, string.Empty);
+
             string domain = FetchDomainFromUrl(siteUrl);
 
             StringBuilder pathBuilder = new StringBuilder();
