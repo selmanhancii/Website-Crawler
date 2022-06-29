@@ -11,23 +11,22 @@ using System.Threading.Tasks;
 
 namespace WebsiteCrawler
 {
-    class Program
+    public class Program
     {
         static string siteUrl = string.Empty;
         static int numberOfPages = 0;
         static List<string> scrappedSites = new List<string>();
         static List<string> storedAssets = new List<string>();
 
-        // Change static text
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            DownloadWebsiteAsync().GetAwaiter().GetResult();
+            await DownloadWebsiteAsync();
 
             Console.Read();
         }
 
         // Download website from url that is defined at config  file
-        static async Task DownloadWebsiteAsync()
+        public static async Task DownloadWebsiteAsync()
         {
             try
             {
@@ -42,7 +41,7 @@ namespace WebsiteCrawler
                     return;
                 }
 
-                CertificateResolver();
+                CheckUpdateCertificate();
 
                 await ScrapUrlAsync(siteUrl);
 
@@ -63,7 +62,7 @@ namespace WebsiteCrawler
 
 
         // Checks and adds the certificate to the url if necessary
-        static void CertificateResolver()
+        static void CheckUpdateCertificate()
         {
             if (!siteUrl.StartsWith("http"))
             {
@@ -104,7 +103,7 @@ namespace WebsiteCrawler
         }
 
         // Reads source code of the website and returns the content as string
-        static string FetchWebsiteCodes(string url)
+        public static string FetchWebsiteCodes(string url)
         {
             var request = GetWebRequest(url);
 
