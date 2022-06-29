@@ -18,6 +18,7 @@ namespace WebsiteCrawler
         static List<string> scrappedSites = new List<string>();
         static List<string> storedAssets = new List<string>();
 
+        // Change static text
         static void Main(string[] args)
         {
             DownloadWebsiteAsync().GetAwaiter().GetResult();
