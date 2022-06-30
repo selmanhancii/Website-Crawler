@@ -17,6 +17,9 @@ namespace WebsiteCrawler
         static int numberOfPages = 0;
         static List<string> scrappedSites = new List<string>();
         static List<string> storedAssets = new List<string>();
+        static readonly object _object = new object();
+
+        static List<int> nos = new List<int>();
 
         static async Task Main(string[] args)
         {
@@ -49,7 +52,6 @@ namespace WebsiteCrawler
                 Console.WriteLine($"-----------------------\nFinished at {endTime}\nNumber of pages downloaded: " +
                     $"{numberOfPages} page downloaded\nTotal time {endTime - startTime}");
 
-                Console.Read();
             }
             catch (Exception ex)
             {
@@ -59,7 +61,6 @@ namespace WebsiteCrawler
                 LogToFile(ex.Message, ex.StackTrace);
             }
         }
-
 
         // Checks and adds the certificate to the url if necessary
         static void CheckUpdateCertificate()
@@ -75,14 +76,17 @@ namespace WebsiteCrawler
         {
             try
             {
-                if (scrappedSites.Contains(url))
+                lock (_object)
                 {
-                    return;
+                    if (scrappedSites.Contains(url))
+                    {
+                        return;
+                    }
+
+                    Console.WriteLine($"Downloading page: {url} \n");
+
+                    scrappedSites.Add(url);
                 }
-
-                Console.WriteLine($"Downloading page: {url} \n");
-
-                scrappedSites.Add(url);
 
                 string websiteCodes = FetchWebsiteCodes(url);
 
